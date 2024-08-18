@@ -31,6 +31,7 @@ import { UploadUsersResponseDto } from './dto/upload-users-response.dto';
 import { UsersInterceptor } from './interceptors/users.interceptor';
 import { User } from './schema/user.schema';
 import { UsersService } from './users.service';
+import { PaginatedResponseDto } from 'src/modules/users/dto/paginated-response.dto';
 
 @ApiTags('Users API')
 @Controller('users')
@@ -42,25 +43,32 @@ export class UsersController {
   @ApiOperation({ summary: `Create a new user` })
   @ApiOkResponse({ type: User })
   async postUsers(@Body() body: CreateUserDto): Promise<User> {
-    return;
+      return await this.usersService.getModel().create(body);
   }
 
   @Get('/')
-  @ApiOperation({ summary: `Return a list of users` })
-  @ApiOkResponse({ type: [User] })
-  async getUsers(@Query() query: QueryUserDto): Promise<User[]> {
-    return await this.usersService.getModel().find();
+  @ApiOperation({ summary: `Return a list of non soft deleted users` })
+  @ApiOkResponse({ type: PaginatedResponseDto<User> })
+  async getUsers(@Query() query: QueryUserDto): Promise<PaginatedResponseDto<User>> {
+    const users = await this.usersService.findWithFilters(query);
+    return  new PaginatedResponseDto<User>({
+        data: users,
+        limit: query.limit,
+        page: query.page,
+        sort: query.sort,
+        sortBy: query.sortBy,
+    });
   }
 
   @Patch('/:id')
-  @ApiOperation({ summary: `Update a single user` })
+  @ApiOperation({ summary: `Update a single non soft deleted user` })
   @ApiParam({ name: 'id', type: String })
   @ApiOkResponse({ type: User })
   async patchUser(
     @Param('id', ParseMongoObjectIdPipe) id: Types.ObjectId,
     @Body() body: UpdateUserDto,
   ): Promise<User> {
-    return;
+    return await this.usersService.getModel().findOneAndUpdate({_id: id, isDeleted: false}, body);
   }
 
   @Delete('/:id')
@@ -70,7 +78,7 @@ export class UsersController {
   async deleteUser(
     @Param('id', ParseMongoObjectIdPipe) id: Types.ObjectId,
   ): Promise<User> {
-    return;
+    return await this.usersService.getModel().findByIdAndUpdate(id, { isDeleted: true });
   }
 
   @Post('/upload')
@@ -113,15 +121,10 @@ export class UsersController {
     }
 
     const users = await CsvParser.parse(file.path);
-
-    /**
-     * @todo
-     * Insert users into database
-     */
-
+    const result = await this.usersService.bulk_create(users);
     return new UploadUsersResponseDto({
-      failedCount: 0,
-      successCount: 0,
+      failedCount: users.length - result.length,
+      successCount: result.length,
     });
   }
 }

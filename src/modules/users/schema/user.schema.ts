@@ -42,7 +42,7 @@ export class User {
   @Prop()
   firstName: string;
 
-  @Prop({ type: Boolean, default: null })
+  @Prop({ type: Boolean, default: false })
   isDeleted: boolean;
 
   @ApiProperty({
