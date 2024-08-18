@@ -8,16 +8,16 @@ export class PaginatedResponseDto<T> implements IPaginatedResponse<T> {
   data: T[];
 
   @ApiResponseProperty()
-  limit: number;
+  limit: number = 1;
 
   @ApiResponseProperty()
-  page: number;
+  page: number = 1;
 
   @ApiResponseProperty()
   sort: PaginatedResponseSortEnum;
 
   @ApiResponseProperty()
-  sortBy: string;
+  sortBy: string = 'createdAt';
 
   constructor(args?: PaginatedResponseDto<T>) {
     Object.assign(this, args);
