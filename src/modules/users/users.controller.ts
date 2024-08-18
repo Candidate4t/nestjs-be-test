@@ -22,8 +22,8 @@ import {
 } from '@nestjs/swagger';
 import { Types } from 'mongoose';
 import { diskStorage } from 'multer';
-import { ParseMongoObjectIdPipe } from 'src/pipes/parse-mongo-object-id.pipe';
-import { CsvParser } from 'src/providers/csv-parser.provider';
+import { ParseMongoObjectIdPipe } from '../../pipes/parse-mongo-object-id.pipe';
+import { CsvParser } from '../../providers/csv-parser.provider';
 import { CreateUserDto } from './dto/create-user.dto';
 import { QueryUserDto } from './dto/query-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -31,7 +31,7 @@ import { UploadUsersResponseDto } from './dto/upload-users-response.dto';
 import { UsersInterceptor } from './interceptors/users.interceptor';
 import { User } from './schema/user.schema';
 import { UsersService } from './users.service';
-import { PaginatedResponseDto } from 'src/modules/users/dto/paginated-response.dto';
+import { PaginatedResponseDto } from './dto/paginated-response.dto';
 
 @ApiTags('Users API')
 @Controller('users')
