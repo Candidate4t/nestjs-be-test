@@ -10,6 +10,8 @@ export class QueryUserDto extends PartialType(User) {
     description: `Number of users to return`,
     required: false,
   })
+  @IsNumber()
+  @Type(() => Number)
   limit: number = 20;
 
   @ApiProperty({
