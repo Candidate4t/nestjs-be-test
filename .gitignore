@@ -36,3 +36,5 @@ lerna-debug.log*
 
 # Ignoring .env config file
 .env
+cypres/videos/*
+cypress/screenshots/*
