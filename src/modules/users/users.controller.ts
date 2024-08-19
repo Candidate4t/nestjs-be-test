@@ -63,11 +63,13 @@ export class UsersController {
   @Patch('/:id')
   @ApiOperation({ summary: `Update a single non soft deleted user` })
   @ApiParam({ name: 'id', type: String })
+  @ApiBody({ type: UpdateUserDto })
   @ApiOkResponse({ type: User })
   async patchUser(
     @Param('id', ParseMongoObjectIdPipe) id: Types.ObjectId,
     @Body() body: UpdateUserDto,
   ): Promise<User> {
+      console.log('id', body);
     return await this.usersService.getModel().findOneAndUpdate({_id: id, isDeleted: false}, body);
   }
 
