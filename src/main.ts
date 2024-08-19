@@ -4,9 +4,14 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { IAppConfig } from 'config/app.config';
 import { AppModule } from './app.module';
-
+import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
   const configService = app.get(ConfigService);
   const appConfig = configService.get<IAppConfig>('appConfig', { infer: true });
   const swaggerPath = appConfig.apiDocsPath;
