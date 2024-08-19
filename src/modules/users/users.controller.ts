@@ -53,10 +53,10 @@ export class UsersController {
     const users = await this.usersService.findWithFilters(query);
     return  new PaginatedResponseDto<User>({
         data: users,
-        limit: query.limit || 1,
-        page: query.page || 1,
-        sort: query.sort || 1,
-        sortBy: query.sortBy || 'createdBy',
+        limit: Number(query.limit),
+        page: Number(query.page),
+        sort: Number(query.sort),
+        sortBy: query.sortBy,
     });
   }
 
