@@ -17,5 +17,12 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-  }
+
+  },
+  "exclude": [
+    "cypress.config.ts",
+    "node_modules",
+    "dist",
+    "cypress"
+  ]
 }

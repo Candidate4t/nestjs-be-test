@@ -1,0 +1,9 @@
+{
+  "birthDate": "2024-08-19T01:45:24.058Z",
+  "email": "johnsmith@nestjs.com",
+  "firstName": "John",
+  "lastName": "Smith",
+  "marketingSource": "string",
+  "phone": "string",
+  "status": "DQL"
+}
